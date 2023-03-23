@@ -8,6 +8,21 @@ import 'package:student_app/db/db_functions/db_functions.dart';
 import 'package:student_app/db/model/student_model.dart';
 
 class StudentProvider with ChangeNotifier {
+  //add
+  final nameStudentController = TextEditingController();
+  final phoneStudentController = TextEditingController();
+  final ageStudentController = TextEditingController();
+  final genderStudentController = TextEditingController();
+  final locationStudentController = TextEditingController();
+  final mainFormKey = GlobalKey<FormState>();
+
+  //edit
+  TextEditingController editNameStd = TextEditingController();
+  TextEditingController editPhoneStd = TextEditingController();
+  TextEditingController editAgeStd = TextEditingController();
+  TextEditingController editPlaceStd = TextEditingController();
+  final editFormKey = GlobalKey<FormState>();
+
   List<StudentModel> studentList = FunctionDb.studentList;
 
   File? studentPhoto;
@@ -24,10 +39,12 @@ class StudentProvider with ChangeNotifier {
 
   List<StudentModel> foundedUsers = [];
   Future<void> getAllStudents() async {
-    final students = FunctionDb().getStudentsDetails();
-    foundedUsers = students as List<StudentModel>;
+    final students = await FunctionDb().getStudentsDetails();
+    foundedUsers = students;
     if (foundedUsers.isNotEmpty) {
       log("foundedUsers have data");
+    } else {
+      log("foundedUsers have no data");
     }
     notifyListeners();
   }
@@ -49,8 +66,7 @@ class StudentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
-  static deleteItem(BuildContext context, String id){
+  static deleteItem(BuildContext context, String id) {
     showDialog(
       context: context,
       builder: (context) {
@@ -64,10 +80,8 @@ class StudentProvider with ChangeNotifier {
                 child: const Text('No')),
             TextButton(
                 onPressed: () {
-                  Provider.of<FunctionDb>(context, listen: false)
-                      .deleteDetails(id);
-                  Provider.of<StudentProvider>(context, listen: false)
-                      .getAllStudents();
+                  Provider.of<FunctionDb>(context, listen: false).deleteDetails(id);
+                  Provider.of<StudentProvider>(context, listen: false).getAllStudents();
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('Successfully deleted'),
                     duration: Duration(seconds: 2),
@@ -80,5 +94,4 @@ class StudentProvider with ChangeNotifier {
       },
     );
   }
-
 }

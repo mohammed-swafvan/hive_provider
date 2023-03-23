@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student_app/controller/core/constains.dart';
 import 'package:student_app/controller/provider/student_provider.dart';
 import 'package:student_app/screens/edit_student/screen_edit_student.dart';
+import 'package:student_app/screens/home/widgets/search_field.dart';
 import 'package:student_app/screens/students_details/screen_students_details.dart';
 
 class ListStudents extends StatelessWidget {
@@ -16,16 +17,9 @@ class ListStudents extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          CupertinoSearchTextField(
-            prefixIcon: const Icon(Icons.search),
-            suffixIcon: const Icon(Icons.close),
-            backgroundColor: Colors.white,
-            onChanged: (value) {
-              Provider.of<StudentProvider>(context, listen: false)
-                  .runFilter(value);
-            },
-          ),
-          const SizedBox(height: 10),
+          kHeight10,
+          const SearchField(),
+          kHeight20,
           Expanded(
             child: Consumer<StudentProvider>(builder: (context, value, Widget? child) {
               if (value.foundedUsers.isNotEmpty) {
@@ -37,11 +31,12 @@ class ListStudents extends StatelessWidget {
                             Navigator.push(context, MaterialPageRoute(
                               builder: ((context) {
                                 return DetailsOfStudents(
-                                    namedetail: data.name,
-                                    phonedetail: data.phoneNo,
-                                    agedetail: data.ageStudent,
-                                    locationdetail: data.locationStudent,
-                                    genderdetail: data.genderStudent, photo: data.photo,);
+                                  namedetail: data.name,
+                                  phonedetail: data.phoneNo,
+                                  agedetail: data.ageStudent,
+                                  locationdetail: data.locationStudent,
+                                  photo: data.photo,
+                                );
                               }),
                             ));
                           },
@@ -49,43 +44,55 @@ class ListStudents extends StatelessWidget {
                             radius: 23,
                             backgroundImage: FileImage(File(data.photo)),
                           ),
-                          title: Text(data.name),
+                          title: Text(
+                            data.name,
+                            style: const TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold),
+                          ),
                           trailing: Wrap(
                             children: [
                               IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: ((context) {
-                                      return EditingStudent(
-                                        editName: data.name,
-                                        editPhone: data.phoneNo,
-                                        editAge: data.ageStudent,
-                                        editGender: data.genderStudent,
-                                        editLocation: data.locationStudent,
-                                        index: index, 
-                                        id: data.id.toString(),
-                                        image: data.photo,
-                                      );
-                                    })));
-                                  },
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.blue,
-                                  )),
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: ((context) {
+                                    return EditingStudent(
+                                      editName: data.name,
+                                      editPhone: data.phoneNo,
+                                      editAge: data.ageStudent,
+                                      editLocation: data.locationStudent,
+                                      index: index,
+                                      id: data.id.toString(),
+                                      image: data.photo,
+                                    );
+                                  })));
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: kWhiteColorOpacity5,
+                                ),
+                              ),
                               IconButton(
                                 onPressed: () {
                                   StudentProvider.deleteItem(context, data.id.toString());
                                 },
                                 icon: const Icon(Icons.delete),
-                                color: Colors.teal,
+                                color: kWhiteColorOpacity5,
                               ),
                             ],
                           ));
                     },
-                    separatorBuilder: ((ctx, index) => const Divider()),
+                    separatorBuilder: ((ctx, index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Divider(
+                            color: kWhiteColorOpacity5,
+                            thickness: 1,
+                          ),
+                        )),
                     itemCount: value.foundedUsers.length);
               } else {
                 return const Center(
-                  child: Text("Add Students"),
+                  child: Text(
+                    "Add Students",
+                    style: kaddStdTextStyle,
+                  ),
                 );
               }
             }),
@@ -93,9 +100,5 @@ class ListStudents extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  cancelButton(BuildContext context) {
-    return Navigator.of(context).pop();
   }
 }

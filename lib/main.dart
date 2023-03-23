@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:student_app/controller/core/constains.dart';
 import 'package:student_app/controller/provider/student_provider.dart';
 import 'package:student_app/db/db_functions/db_functions.dart';
 import 'package:student_app/db/model/student_model.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.teal,
+          scaffoldBackgroundColor: kBlackColor,
         ),
         home: const HomeScreen(),
       ),

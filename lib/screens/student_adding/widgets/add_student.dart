@@ -2,20 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student_app/controller/core/constains.dart';
 import 'package:student_app/controller/provider/student_provider.dart';
 import 'package:student_app/db/db_functions/db_functions.dart';
 import 'package:student_app/db/model/student_model.dart';
 
 class AddStudents extends StatelessWidget {
-  AddStudents({super.key});
-
-  final nameStudentController = TextEditingController();
-  final phoneStudentController = TextEditingController();
-  final ageStudentController = TextEditingController();
-  final genderStudentController = TextEditingController();
-  final locationStudentController = TextEditingController();
-
-  final mainFormKey = GlobalKey<FormState>();
+  const AddStudents({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +18,7 @@ class AddStudents extends StatelessWidget {
     });
     return Consumer<StudentProvider>(builder: (context, value, _) {
       return Form(
-        key: mainFormKey,
+        key: value.mainFormKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -46,22 +39,18 @@ class AddStudents extends StatelessWidget {
               height: 5,
             ),
             ElevatedButton(
+              style: kelevatedButtonStyle,
               onPressed: () {
                 studentProvider.getPhoto();
               },
               child: const Icon(Icons.photo_library_outlined),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            kHeight20,
             TextFormField(
+              style: const TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold),
               keyboardType: TextInputType.name,
-              controller: nameStudentController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter your name',
-                labelText: 'Name',
-              ),
+              controller: value.nameStudentController,
+              decoration: kInputDecoration(hintText: 'Enter your name', labelText: 'Name'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Required Name';
@@ -70,15 +59,12 @@ class AddStudents extends StatelessWidget {
                 }
               },
             ),
-            const SizedBox(height: 8),
+            kHeight10,
             TextFormField(
+              style: const TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold),
               keyboardType: TextInputType.number,
-              controller: ageStudentController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter your age',
-                labelText: 'Age',
-              ),
+              controller: value.ageStudentController,
+              decoration: kInputDecoration(hintText: 'Enter your age', labelText: 'Age'),
               validator: (
                 value,
               ) {
@@ -91,15 +77,12 @@ class AddStudents extends StatelessWidget {
                 }
               },
             ),
-            const SizedBox(height: 8),
+            kHeight10,
             TextFormField(
+              style: const TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold),
               keyboardType: TextInputType.phone,
-              controller: phoneStudentController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter Mobile No',
-                labelText: 'Mobile No',
-              ),
+              controller: value.phoneStudentController,
+              decoration: kInputDecoration(hintText: 'Enter monile no', labelText: 'Mobile'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Enter Phone Number';
@@ -110,15 +93,12 @@ class AddStudents extends StatelessWidget {
                 }
               },
             ),
-            const SizedBox(height: 8),
+            kHeight10,
             TextFormField(
+              style: const TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold),
               keyboardType: TextInputType.text,
-              controller: locationStudentController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter school place',
-                labelText: 'School',
-              ),
+              controller: value.locationStudentController,
+              decoration: kInputDecoration(hintText: 'Enter your place', labelText: 'Location'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Required Place';
@@ -127,11 +107,18 @@ class AddStudents extends StatelessWidget {
                 }
               },
             ),
-            const SizedBox(height: 13),
+            kHeight20,
             ElevatedButton.icon(
+              style: kelevatedButtonStyle,
               onPressed: () {
-                if (mainFormKey.currentState!.validate() && studentProvider.studentPhoto != null) {
-                  addStudentButtonClicked(context);
+                if (value.mainFormKey.currentState!.validate() && studentProvider.studentPhoto != null) {
+                  addStudentButtonClicked(
+                    context,
+                    value.nameStudentController,
+                    value.ageStudentController,
+                    value.phoneStudentController,
+                    value.locationStudentController,
+                  );
                   Navigator.of(context).pop();
                 } else {}
               },
@@ -144,17 +131,21 @@ class AddStudents extends StatelessWidget {
     });
   }
 
-  Future<void> addStudentButtonClicked(context) async {
-    final name = nameStudentController.text.trim();
-    final phone = phoneStudentController.text.trim();
-    final age = ageStudentController.text.trim();
-    final gender = genderStudentController.text.trim();
-    final location = locationStudentController.text.trim();
+  Future<void> addStudentButtonClicked(
+    context,
+    TextEditingController nameCntlr,
+    TextEditingController ageCntrl,
+    TextEditingController phoneCntrl,
+    TextEditingController locationCntrl,
+  ) async {
+    final name = nameCntlr.text.trim();
+    final phone = phoneCntrl.text.trim();
+    final age = ageCntrl.text.trim();
+    final location = locationCntrl.text.trim();
 
     if (name.isEmpty ||
         phone.isEmpty ||
         age.isEmpty ||
-        gender.isEmpty ||
         location.isEmpty ||
         Provider.of<StudentProvider>(context, listen: false).studentPhoto!.path.isEmpty) {
       return;
@@ -172,7 +163,6 @@ class AddStudents extends StatelessWidget {
       name: name,
       phoneNo: phone,
       ageStudent: age,
-      genderStudent: gender,
       locationStudent: location,
       photo: Provider.of<StudentProvider>(context, listen: false).studentPhoto!.path,
       id: DateTime.now().microsecondsSinceEpoch.toString(),

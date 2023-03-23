@@ -16,19 +16,15 @@ class StudentModel {
   final String ageStudent;
 
   @HiveField(4)
-  final String genderStudent;
-
-  @HiveField(5)
   final String locationStudent;
 
-  @HiveField(6)
+  @HiveField(5)
   final String photo;
 
   StudentModel({
     required this.name,
     required this.phoneNo,
     required this.ageStudent,
-    required this.genderStudent,
     required this.locationStudent,
     required this.id,
     required this.photo,
