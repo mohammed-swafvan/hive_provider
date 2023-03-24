@@ -24,7 +24,7 @@ class AddStudents extends StatelessWidget {
             value.studentPhoto == null
                 ? const CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('assets/images/Profile.png'),
+                    backgroundImage: AssetImage('assets/images/user-profile-with-shield-grey-icon-online-account-vector-32550024.jpeg'),
                   )
                 : CircleAvatar(
                     backgroundImage: FileImage(

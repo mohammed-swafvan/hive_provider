@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/screens/student_adding/widgets/add_student.dart';
+import 'package:student_app/presentation/student_adding/widgets/add_student.dart';
 
 class ScreenAddStudent extends StatelessWidget {
   const ScreenAddStudent({super.key});

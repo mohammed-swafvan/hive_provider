@@ -14,7 +14,7 @@ final kWhiteColorOpacity8 = Colors.white.withOpacity(0.8);
 final kdetailsTextStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: kWhiteColorOpacity8);
 const  kaddStdTextStyle =  TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold);
 
-// input decoration for adding student text form field
+// input decoration for text form field
 kInputDecoration({required String hintText, required String labelText}) {
   return InputDecoration(
     focusedBorder: OutlineInputBorder(

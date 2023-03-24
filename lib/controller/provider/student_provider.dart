@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class StudentProvider with ChangeNotifier {
   TextEditingController editPlaceStd = TextEditingController();
   final editFormKey = GlobalKey<FormState>();
 
-  static List<StudentModel> studentList = [];
+  List<StudentModel> studentList = [];
 
   File? studentPhoto;
   Future<void> getPhoto() async {
@@ -37,11 +38,12 @@ class StudentProvider with ChangeNotifier {
 
   List<StudentModel> foundedUsers = [];
   Future<List<StudentModel>> getAllStudents() async {
+    log('geet all students called');
     final studentDb = await Hive.openBox<StudentModel>('student_db');
     studentList.clear();
-
     studentList.addAll(studentDb.values);
     foundedUsers = studentList;
+    notifyListeners();
     return studentList;
   }
 
@@ -53,7 +55,7 @@ class StudentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void runFilter(String enteredKeyword) {
+  Future<void> runFilter(String enteredKeyword) async {
     List<StudentModel> result = [];
     if (enteredKeyword.isEmpty) {
       result = studentList;

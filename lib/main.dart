@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:student_app/controller/core/constains.dart';
 import 'package:student_app/controller/provider/student_provider.dart';
 import 'package:student_app/db/model/student_model.dart';
-import 'package:student_app/screens/home/screen_home.dart';
+import 'package:student_app/presentation/splash/screen_splash.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.teal,
           scaffoldBackgroundColor: kBlackColor,
         ),
-        home: const HomeScreen(),
+        home: const ScreenSplash(),
       ),
     );
   }

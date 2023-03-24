@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_app/controller/core/constains.dart';
 import 'package:student_app/controller/provider/student_provider.dart';
-import 'package:student_app/screens/edit_student/screen_edit_student.dart';
-import 'package:student_app/screens/home/widgets/search_field.dart';
-import 'package:student_app/screens/students_details/screen_students_details.dart';
+import 'package:student_app/presentation/edit_student/screen_edit_student.dart';
+import 'package:student_app/presentation/home/widgets/search_field.dart';
+import 'package:student_app/presentation/students_details/screen_students_details.dart';
 
 class ListStudents extends StatelessWidget {
   const ListStudents({super.key});
@@ -111,13 +111,26 @@ Future<void> deleteButtonClicked(BuildContext context, String id) async {
     context: context,
     builder: (context) {
       return AlertDialog(
-        content: const Text('Are you sure want to delete this ?'),
+        title: const Text(
+          'Alert!',
+          style: TextStyle(color: kBlackColor, fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'Are you sure you want to delete the student account ?',
+          style: TextStyle(color: kBlackColorOpacity5, fontWeight: FontWeight.w600),
+        ),
         actions: [
           TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('No')),
+              child: Text(
+                'No',
+                style: TextStyle(
+                  color: kBlackColorOpacity5,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
           TextButton(
               onPressed: () async {
                 Provider.of<StudentProvider>(context, listen: false).deleteStudent(id);
@@ -127,7 +140,13 @@ Future<void> deleteButtonClicked(BuildContext context, String id) async {
                 ));
                 Navigator.of(context).pop();
               },
-              child: const Text('Yes')),
+              child: const Text(
+                'Yes',
+                style: TextStyle(
+                  color: kBlackColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
         ],
       );
     },
