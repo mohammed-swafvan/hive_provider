@@ -36,11 +36,12 @@ class DetailsOfStudents extends StatelessWidget {
         body: Center(
           child: Container(
             width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.4,
-            decoration: BoxDecoration(color: kWhiteColor.withOpacity(0.3), borderRadius: BorderRadius.circular(10)),
+            height: MediaQuery.of(context).size.height * 0.5,
+            decoration: BoxDecoration(color: kWhiteColor.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                kHeight10,
                 CircleAvatar(
                   foregroundImage: FileImage(File((photo))),
                   radius: 70,
@@ -61,6 +62,7 @@ class DetailsOfStudents extends StatelessWidget {
                   'AGE : $agedetail',
                   style: kdetailsTextStyle,
                 ),
+                kHeight10,
               ],
             ),
           ),

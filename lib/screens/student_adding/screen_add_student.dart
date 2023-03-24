@@ -15,7 +15,7 @@ class ScreenAddStudent extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.9,
               width: MediaQuery.of(context).size.width,
-              child: Center(
+              child: const Center(
                 child: AddStudents(),
               ),
             ),

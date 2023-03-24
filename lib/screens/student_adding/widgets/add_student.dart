@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_app/controller/core/constains.dart';
 import 'package:student_app/controller/provider/student_provider.dart';
-import 'package:student_app/db/db_functions/db_functions.dart';
 import 'package:student_app/db/model/student_model.dart';
 
 class AddStudents extends StatelessWidget {
@@ -167,7 +166,7 @@ class AddStudents extends StatelessWidget {
       photo: Provider.of<StudentProvider>(context, listen: false).studentPhoto!.path,
       id: DateTime.now().microsecondsSinceEpoch.toString(),
     );
-    Provider.of<FunctionDb>(context, listen: false).addStudents(student);
-    Provider.of<FunctionDb>(context, listen: false).getStudentsDetails();
+    Provider.of<StudentProvider>(context, listen: false).addStudent(student);
+    Provider.of<StudentProvider>(context, listen: false).getAllStudents();
   }
 }

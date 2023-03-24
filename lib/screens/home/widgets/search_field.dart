@@ -12,18 +12,18 @@ class SearchField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: CupertinoSearchTextField(
-        placeholderStyle: TextStyle(color: kWhiteColorOpacity8),
+        placeholderStyle: TextStyle(color: kWhiteColorOpacity5),
         style: const TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
         prefixIcon: Icon(
           Icons.search,
-          color: kWhiteColorOpacity8,
+          color: kWhiteColorOpacity5,
         ),
         suffixIcon: Icon(
           Icons.close,
-          color: kWhiteColorOpacity8,
+          color: kWhiteColorOpacity5,
         ),
-        backgroundColor: kWhiteColorOpacity5,
+        backgroundColor: kWhiteColor.withOpacity(0.2),
         onChanged: (value) {
           Provider.of<StudentProvider>(context, listen: false).runFilter(value);
         },

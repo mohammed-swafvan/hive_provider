@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_app/controller/core/constains.dart';
 import 'package:student_app/controller/provider/student_provider.dart';
-import 'package:student_app/db/db_functions/db_functions.dart';
 import 'package:student_app/db/model/student_model.dart';
 
 // ignore: must_be_immutable
@@ -156,5 +155,5 @@ Future<void> onEditSaveButton({
     id: id,
   );
 
-  Provider.of<FunctionDb>(ctx, listen: false).editList(index, studentmodel);
+  Provider.of<StudentProvider>(ctx, listen: false).editList(index, studentmodel);
 }

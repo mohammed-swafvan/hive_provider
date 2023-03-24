@@ -1,10 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:student_app/db/db_functions/db_functions.dart';
 import 'package:student_app/db/model/student_model.dart';
 
 class StudentProvider with ChangeNotifier {
@@ -23,7 +21,7 @@ class StudentProvider with ChangeNotifier {
   TextEditingController editPlaceStd = TextEditingController();
   final editFormKey = GlobalKey<FormState>();
 
-  List<StudentModel> studentList = FunctionDb.studentList;
+  static List<StudentModel> studentList = [];
 
   File? studentPhoto;
   Future<void> getPhoto() async {
@@ -38,20 +36,20 @@ class StudentProvider with ChangeNotifier {
   }
 
   List<StudentModel> foundedUsers = [];
-  Future<void> getAllStudents() async {
-    final students = await FunctionDb().getStudentsDetails();
-    foundedUsers = students;
-    if (foundedUsers.isNotEmpty) {
-      log("foundedUsers have data");
-    } else {
-      log("foundedUsers have no data");
-    }
-    notifyListeners();
+  Future<List<StudentModel>> getAllStudents() async {
+    final studentDb = await Hive.openBox<StudentModel>('student_db');
+    studentList.clear();
+
+    studentList.addAll(studentDb.values);
+    foundedUsers = studentList;
+    return studentList;
   }
 
-  void addStudent(data) {
-    foundedUsers.clear();
-    foundedUsers.addAll(data);
+  Future<void> addStudent(data) async {
+    final studentDb = await Hive.openBox<StudentModel>('student_db');
+    await studentDb.put(data.id, data);
+    studentList.add(data);
+    getAllStudents();
     notifyListeners();
   }
 
@@ -66,32 +64,17 @@ class StudentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  static deleteItem(BuildContext context, String id) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: const Text('Are you sure want to delete this ?'),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('No')),
-            TextButton(
-                onPressed: () {
-                  Provider.of<FunctionDb>(context, listen: false).deleteDetails(id);
-                  Provider.of<StudentProvider>(context, listen: false).getAllStudents();
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Successfully deleted'),
-                    duration: Duration(seconds: 2),
-                  ));
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Yes')),
-          ],
-        );
-      },
-    );
+  Future<void> editList(int index, StudentModel value) async {
+    final studentDb = await Hive.openBox<StudentModel>('student_db');
+    studentDb.putAt(index, value);
+    getAllStudents();
+    notifyListeners();
+  }
+
+  Future<void> deleteStudent(id) async {
+    final studentDb = await Hive.openBox<StudentModel>('student_db');
+    await studentDb.delete(id);
+    getAllStudents();
+    notifyListeners();
   }
 }

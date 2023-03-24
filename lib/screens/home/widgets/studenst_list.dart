@@ -71,7 +71,10 @@ class ListStudents extends StatelessWidget {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  StudentProvider.deleteItem(context, data.id.toString());
+                                  deleteButtonClicked(
+                                    context,
+                                    data.id.toString(),
+                                  );
                                 },
                                 icon: const Icon(Icons.delete),
                                 color: kWhiteColorOpacity5,
@@ -101,4 +104,32 @@ class ListStudents extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> deleteButtonClicked(BuildContext context, String id) async {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        content: const Text('Are you sure want to delete this ?'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('No')),
+          TextButton(
+              onPressed: () async {
+                Provider.of<StudentProvider>(context, listen: false).deleteStudent(id);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('Successfully deleted'),
+                  duration: Duration(seconds: 2),
+                ));
+                Navigator.of(context).pop();
+              },
+              child: const Text('Yes')),
+        ],
+      );
+    },
+  );
 }
